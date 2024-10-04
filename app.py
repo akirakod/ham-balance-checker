@@ -20,6 +20,7 @@ def render_input_columns(labels, default_values, key_prefix):
 page_options = ["Part 1 Balance Sheet", "Part 2 Income Statement", "Part 3 Cash Flow"]
 page = st.sidebar.radio("Select Page", page_options)
 
+
 ### Part 1: Balance Sheet
 if page == "Part 1 Balance Sheet":
     st.header("Part 1 Balance Sheet")
@@ -34,15 +35,17 @@ if page == "Part 1 Balance Sheet":
     # RHS Inputs
     st.subheader("Right-Hand Side (RHS)")
     rhs_labels = ['IP', 'TP', 'MP', 'NP', 'CC', 'RE']
-    rhs_value = st.number_input('Total Right Side', value=0.0, key='rhs_total')
+    rhs_values = render_input_columns(rhs_labels, [0.0] * len(rhs_labels), 'rhs')
 
     # Real-time balance checking
     lhs_total = round(sum(lhs_values), 2)
-    rhs_total = round(rhs_value, 2)
+    rhs_total = round(sum(rhs_values), 2)
 
     is_eq_balanced = is_balanced(lhs_total, rhs_total)
     result = "Balanced" if is_eq_balanced else "Not Balanced"
 
+    st.write(f"**LHS Total:** {lhs_total:.2f}")
+    st.write(f"**RHS Total:** {rhs_total:.2f}")
     st.write(f"**Balance Status:** {result}")
 
 ### Part 2: Income Statement
